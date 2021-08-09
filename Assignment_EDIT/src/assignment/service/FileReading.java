@@ -5,6 +5,7 @@ import assignment.utilility.ConversionRate;
 import java.util.*;
 import java.io.*;
 import java.util.regex.*;
+import java.text.DecimalFormat;
 import assignment.com.UserInput;
 
 public class FileReading implements Runnable{
@@ -21,7 +22,6 @@ public class FileReading implements Runnable{
     String sourceFile;
     Pattern alphaPattern;
     Pattern numericPattern;
-    BufferedWriter bufferWriter;
     
     public FileReading(String sourceFile, Pattern alphaPattern, Pattern numericPattern) {
           this.sourceFile = sourceFile;
@@ -36,7 +36,9 @@ public class FileReading implements Runnable{
     public void run(){
             
       try{          
-          
+      
+      FileWriter file = new FileWriter("D:\\Assignment\\error.txt", true);   
+      BufferedWriter bufferWriter = new BufferedWriter(file);
       FileReader fileReader = new FileReader(sourceFile);   
       BufferedReader bufferReader = new BufferedReader(fileReader);
             
@@ -47,19 +49,25 @@ public class FileReading implements Runnable{
         
         if(element.length != 6){
           Logs.printLogs("The data elements are not same on LINE NO : "+counter); 
-          //bufferWriter.write("The data elements are not same on LINE NO : "+counter+"\n");
+          bufferWriter.write(record);
+          bufferWriter.write("\n");
           continue;  
         }
         
         if(!numericPattern.matcher(element[3] + element[5]).matches() || 
            !alphaPattern.matcher(element[0] + element[1] + element[2] + element[4]).matches()){
            Logs.printLogs("Invalid Data at LINE NO : "+counter);  
-           //bufferWriter.write("Invalid Data at LINE NO : "+counter+"\n");
+           bufferWriter.write(record);
+           bufferWriter.write("\n");
            continue;
         }
       
         profit = conversionRate.convertRupeesToDollar(Float.parseFloat(element[3]));
-        element[3] = Double.toString(profit);
+        double roundOff = Math.round(profit * 100.0) / 100.0;
+        DecimalFormat df = new DecimalFormat("0000.00");
+        String formatted = df.format(roundOff);
+        element[3] = formatted;
+ 
         element[0] = element[0].toUpperCase();
                              
         FileOperators info = new FileOperators(element[0],element[1],element[2], element[4], Integer.parseInt(element[5]), Double.parseDouble(element[3]));
@@ -76,7 +84,7 @@ public class FileReading implements Runnable{
         listOfElements.add(listOfRecords); 
 
         } 
-      
+      bufferWriter.close();
       } catch(FileNotFoundException e){
         e.printStackTrace();
         Logs.printLogs("File not found");  
