@@ -6,13 +6,12 @@ import java.util.*;
 import java.io.*;
 import java.util.regex.*;
 import java.text.DecimalFormat;
-import assignment.com.UserInput;
 
 public class FileReading implements Runnable{
            
     ConversionRate conversionRate = new ConversionRate();    
     ArrayList<String> listOfRecords;
-    ArrayList<ArrayList<String>> listOfElements = new ArrayList<ArrayList<String>>();
+    ArrayList<ArrayList<String>> listOfElements = new ArrayList<>();
     
     String[] element;
     String record="";
@@ -33,6 +32,7 @@ public class FileReading implements Runnable{
         this.listOfElements = listOfElements;
     }
         
+    @Override
     public void run(){
             
       try{          
@@ -66,12 +66,11 @@ public class FileReading implements Runnable{
         double roundOff = Math.round(profit * 100.0) / 100.0;
         DecimalFormat df = new DecimalFormat("0000.00");
         String formatted = df.format(roundOff);
+        System.out.println(formatted);
         element[3] = formatted;
  
         element[0] = element[0].toUpperCase();
                              
-        FileOperators info = new FileOperators(element[0],element[1],element[2], element[4], Integer.parseInt(element[5]), Double.parseDouble(element[3]));
-          
         String temp = element[0];
         element[0] = element[5];
         element[5] = element[3];
@@ -79,12 +78,13 @@ public class FileReading implements Runnable{
         element[2] = element[1];
         element[1] = temp;
              
-        listOfRecords = new ArrayList<String>();
+        listOfRecords = new ArrayList<>();
         Collections.addAll(listOfRecords, element);
         listOfElements.add(listOfRecords); 
-
+         
         } 
       bufferWriter.close();
+      
       } catch(FileNotFoundException e){
         e.printStackTrace();
         Logs.printLogs("File not found");  

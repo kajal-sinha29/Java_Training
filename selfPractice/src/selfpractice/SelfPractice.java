@@ -3,19 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package javaapplication8;
+package selfpractice;
 
 /**
  *
  * @author LENOVO
  */
-public class JavaApplication8 {
+public class SelfPractice {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        System.out.println("hello");
+        // TODO code application logic here
     }
     
 }

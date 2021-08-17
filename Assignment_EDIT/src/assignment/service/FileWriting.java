@@ -2,7 +2,6 @@
 package assignment.service;
 import java.util.*;
 import java.io.*;
-import assignment.com.UserInput;
 
 
 public class FileWriting {
@@ -12,7 +11,7 @@ public class FileWriting {
     public void writeFile(ArrayList<ArrayList<String>> listOfRecords, String destFile){       
       try{
          
-          String data = "";
+          String data ;
           FileWriter file = new FileWriter(destFile, true);   
           BufferedWriter bufferWriter = new BufferedWriter(file);     
           bufferWriter.write(Headers);
